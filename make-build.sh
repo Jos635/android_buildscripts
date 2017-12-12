@@ -8,8 +8,4 @@ source build/envsetup.sh
 
 lunch lineage_berlin-userdebug
 
-make -j $NUM_CORES
-
-mka target-files-package dist
-
-./make-update-zip.sh
+make -j $NUM_CORES && mka target-files-package dist && ./make-update-zip.sh
