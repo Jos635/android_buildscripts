@@ -1,6 +1,6 @@
 #! /bin/bash
 
-NUM_CORES=grep -c ^processor /proc/cpuinfo
+NUM_CORES="`grep -c ^processor /proc/cpuinfo`"
 
 echo "Using $NUM_CORES cores"
 
