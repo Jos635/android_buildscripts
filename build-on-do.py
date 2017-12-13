@@ -7,6 +7,7 @@ import os
 import uuid
 import paramiko
 import time
+import shutil
 
 parser = argparse.ArgumentParser(description='Build Android on DigitalOcean')
 parser.add_argument('token', type=str, help="DO authentication token")
@@ -20,7 +21,7 @@ token = args.token
 
 # Currently the most powerful machine available for me.
 # Fetching source:  8min download + 8min unpacking
-# Compiling:        ~40 min?
+# Compiling:        a few hours
 # TODO switch to high-cpu with 4 or 8 dedicated cores once it is unlocked
 size_slug = '8gb'
 
@@ -107,14 +108,14 @@ else:
 
 time.sleep(15)
 
-droplet = manager.get_droplet(args.droplet_id)
+droplet = manager.get_droplet(droplet.id)
 
 # key = droplet.ssh_keys[0]
 print("Droplet ID: {}".format(droplet.id))
 ip = droplet.networks['v4'][0]['ip_address']
 print("Droplet IP: {}".format(ip))
 
-fingerprint=key.fingerprint #'b9:26:3b:a9:48:e2:40:8f:68:cd:81:ec:d9:0a:29:db'# key.fingerprint
+fingerprint=key.fingerprint
 
 key_filename = ".ssh_keys/" + get_ssh_key(fingerprint)
 client = paramiko.SSHClient()
@@ -155,13 +156,14 @@ os.system("mkdir -p output")
 for remotefile in sftp.listdir():
     if ".zip" in remotefile:
         print("Downloading " + remotefile)
-        shutil.copyfileobj(sftp.open("./" + remotefile), open("output/" + remotefile), 16384)
+        shutil.copyfileobj(sftp.open("./" + remotefile), open("output/" + remotefile, 'w'), 16384)
 
 client.close()
 
 # destroy droplet iff not specified by argument
 if args.droplet_id == None:
     droplet.destroy()
+    time.sleep(15)
 
 # destroy volume iff not specified by argument
 if args.volume_id == None:
