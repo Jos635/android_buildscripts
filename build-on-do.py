@@ -132,7 +132,7 @@ def run(client, command):
     for line in stderr:
         print(line.strip('\n'))
 
-run(client, "bash -c 'apt-get update && apt-get install git build-essential libncurses5-dev bzip2 python repo default-jdk imagemagick schedtool git-core gnupg flex bison gperf build-essential zip curl zlib1g-dev gcc-multilib g++-multilib libc6-dev-i386 lib32ncurses5-dev x11proto-core-dev libx11-dev lib32z-dev ccache libgl1-mesa-dev libxml2-utils xsltproc unzip -y --force-yes'")
+run(client, "bash -c 'apt-get update && apt-get install git build-essential libncurses5-dev bzip2 python repo default-jdk imagemagick schedtool git-core gnupg flex bison gperf build-essential zip curl zlib1g-dev gcc-multilib g++-multilib libc6-dev-i386 lib32ncurses5-dev x11proto-core-dev libx11-dev lib32z-dev ccache libgl1-mesa-dev libxml2-utils xsltproc unzip bc -y --force-yes'")
 
 if volume == None:
     run(client, "bash -c 'sudo mkdir -p /mnt/volume'")
